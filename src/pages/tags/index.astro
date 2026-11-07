@@ -1,0 +1,37 @@
+---
+import Page from '../../layouts/Page.astro';
+import { collectTags, getPosts, withBase } from '../../utils';
+
+const tags = collectTags(await getPosts());
+---
+
+<Page title="Tags" description="Browse posts by topic">
+	<h1>Tags</h1>
+	{tags.length === 0 && <p>No tags yet.</p>}
+	<ul class="tags tag-cloud">
+		{
+			tags.map(([slug, { name, count }]) => (
+				<li>
+					<a class="tag" href={withBase(`/tags/${slug}/`)}>
+						#{name} <span class="count">{count}</span>
+					</a>
+				</li>
+			))
+		}
+	</ul>
+</Page>
+
+<style>
+	.tag-cloud {
+		gap: 0.6rem;
+		margin-top: 1.5rem;
+	}
+	.tag-cloud .tag {
+		font-size: 1rem;
+		padding: 0.3rem 0.75rem;
+	}
+	.count {
+		color: var(--muted);
+		margin-left: 0.25rem;
+	}
+</style>

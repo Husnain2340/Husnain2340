@@ -1,0 +1,25 @@
+---
+import { SOCIALS } from '../consts';
+import Page from '../layouts/Page.astro';
+---
+
+<Page title="About" description="About Husnain Ahmad">
+	<article class="prose">
+		<h1>About me</h1>
+		<p>
+			Hi, I'm <strong>Husnain Ahmad</strong>. <!-- TODO: a sentence about what you do. -->
+			I'm interested in software engineering, data and building useful things.
+		</p>
+		<p>
+			On this blog I write about the things I'm working on and learning: technical write-ups,
+			notes on data and analytics, and the occasional post on career and productivity.
+		</p>
+		<h2>Get in touch</h2>
+		<ul>
+			<li><a href={SOCIALS.github}>GitHub</a></li>
+			<li><a href={SOCIALS.linkedin}>LinkedIn</a></li>
+			<li><a href={SOCIALS.x}>X / Twitter</a></li>
+			<li><a href={SOCIALS.email}>Email</a></li>
+		</ul>
+	</article>
+</Page>
