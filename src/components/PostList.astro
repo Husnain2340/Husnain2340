@@ -1,0 +1,98 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { readingTime, tagSlug, withBase } from '../utils';
+import FormattedDate from './FormattedDate.astro';
+
+interface Props {
+	posts: CollectionEntry<'blog'>[];
+	searchable?: boolean;
+}
+
+const { posts, searchable = false } = Astro.props;
+---
+
+<ul class="post-list">
+	{
+		posts.map((post) => (
+			<li
+				data-search={
+					searchable
+						? [post.data.title, post.data.description, ...post.data.tags, post.body ?? '']
+								.join(' ')
+								.replace(/[#*_`>|\-\[\]()]+/g, ' ')
+								.replace(/\s+/g, ' ')
+								.toLowerCase()
+						: undefined
+				}
+			>
+				<div class="meta">
+					<FormattedDate date={post.data.pubDate} />
+					<span aria-hidden="true">·</span>
+					<span>{readingTime(post.body)}</span>
+					{post.data.draft && <span class="draft">Draft</span>}
+				</div>
+				<h2>
+					<a href={withBase(`/blog/${post.id}/`)}>{post.data.title}</a>
+				</h2>
+				<p>{post.data.description}</p>
+				{post.data.tags.length > 0 && (
+					<ul class="tags">
+						{post.data.tags.map((tag) => (
+							<li>
+								<a class="tag" href={withBase(`/tags/${tagSlug(tag)}/`)}>
+									#{tag}
+								</a>
+							</li>
+						))}
+					</ul>
+				)}
+			</li>
+		))
+	}
+</ul>
+
+<style>
+	.post-list {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: flex;
+		flex-direction: column;
+	}
+	.post-list > li {
+		padding: 1.5rem 0;
+		border-bottom: 1px solid var(--border);
+	}
+	.post-list > li:first-child {
+		padding-top: 0;
+	}
+	.meta {
+		display: flex;
+		gap: 0.5rem;
+		align-items: center;
+		color: var(--muted);
+		font-size: 0.85rem;
+	}
+	h2 {
+		font-size: 1.35rem;
+		margin: 0.25rem 0;
+	}
+	h2 a {
+		color: var(--text);
+		text-decoration: none;
+	}
+	h2 a:hover {
+		color: var(--accent);
+	}
+	p {
+		margin: 0 0 0.5rem;
+		color: var(--muted);
+	}
+	.draft {
+		font-size: 0.75rem;
+		padding: 0 0.4rem;
+		border-radius: 4px;
+		background: var(--accent-soft);
+		color: var(--accent);
+	}
+</style>

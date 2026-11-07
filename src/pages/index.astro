@@ -1,0 +1,53 @@
+---
+import PostList from '../components/PostList.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import Page from '../layouts/Page.astro';
+import { getPosts, withBase } from '../utils';
+
+const recent = (await getPosts()).slice(0, 5);
+---
+
+<Page title={SITE_TITLE} description={SITE_DESCRIPTION}>
+	<section class="intro">
+		<h1>Hi, I'm Husnain 👋</h1>
+		<p>
+			I write about software, data, and whatever I'm learning at the moment. This is my corner of
+			the internet for notes, write-ups and the occasional opinion.
+		</p>
+		<p><a href={withBase('/about/')}>More about me →</a></p>
+	</section>
+
+	<section>
+		<div class="section-head">
+			<h2>Recent posts</h2>
+			<a href={withBase('/blog/')}>View all</a>
+		</div>
+		<PostList posts={recent} />
+	</section>
+</Page>
+
+<style>
+	.intro {
+		margin-bottom: 3rem;
+	}
+	.intro h1 {
+		font-size: 2.25rem;
+	}
+	.intro p {
+		font-size: 1.1rem;
+		color: var(--muted);
+	}
+	.section-head {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		margin-bottom: 1rem;
+	}
+	.section-head h2 {
+		font-size: 1rem;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		color: var(--muted);
+		margin: 0;
+	}
+</style>

@@ -1,0 +1,65 @@
+---
+import PostList from '../../components/PostList.astro';
+import Page from '../../layouts/Page.astro';
+import { getPosts } from '../../utils';
+
+const posts = await getPosts();
+---
+
+<Page title="Blog" description="All posts">
+	<h1>Blog</h1>
+	<div class="search">
+		<label for="search" class="sr-only">Search posts</label>
+		<input id="search" type="search" placeholder={`Search ${posts.length} posts…`} autocomplete="off" />
+	</div>
+	<p id="no-results" class="empty" hidden>No posts match your search.</p>
+	<PostList posts={posts} searchable />
+</Page>
+
+<script>
+	const input = document.getElementById('search') as HTMLInputElement | null;
+	const items = document.querySelectorAll<HTMLLIElement>('li[data-search]');
+	const empty = document.getElementById('no-results');
+
+	function filter() {
+		const terms = (input?.value ?? '').toLowerCase().split(/\s+/).filter(Boolean);
+		let shown = 0;
+		for (const item of items) {
+			const hay = item.dataset.search ?? '';
+			const match = terms.every((t) => hay.includes(t));
+			item.hidden = !match;
+			if (match) shown++;
+		}
+		if (empty) empty.hidden = shown > 0;
+	}
+
+	// Support /blog/?q=term links.
+	const q = new URLSearchParams(location.search).get('q');
+	if (input && q) input.value = q;
+	input?.addEventListener('input', filter);
+	filter();
+</script>
+
+<style>
+	.search {
+		margin: 1rem 0 2rem;
+	}
+	input {
+		width: 100%;
+		box-sizing: border-box;
+		padding: 0.65rem 0.9rem;
+		font: inherit;
+		font-size: 1rem;
+		color: var(--text);
+		background: var(--surface);
+		border: 1px solid var(--border);
+		border-radius: 8px;
+	}
+	input:focus {
+		outline: 2px solid var(--accent);
+		outline-offset: 1px;
+	}
+	.empty {
+		color: var(--muted);
+	}
+</style>

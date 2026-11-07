@@ -1,0 +1,239 @@
+/* Minimal theme with light and dark modes. Colours live in tokens below. */
+
+:root,
+:root[data-theme='light'] {
+	--bg: #ffffff;
+	--surface: #f4f5f7;
+	--text: #1a1d23;
+	--muted: #5c6370;
+	--border: #e4e6eb;
+	--accent: #2f5bea;
+	--accent-soft: #e8eefe;
+	--code-bg: #f6f8fa;
+	color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+	--bg: #111317;
+	--surface: #1b1e24;
+	--text: #e6e8eb;
+	--muted: #9aa1ad;
+	--border: #2a2e36;
+	--accent: #7c9cff;
+	--accent-soft: #1e2a4d;
+	--code-bg: #161b22;
+	color-scheme: dark;
+}
+
+/* Before the inline theme script runs (or with JS off), follow the OS. */
+@media (prefers-color-scheme: dark) {
+	:root:not([data-theme]) {
+		--bg: #111317;
+		--surface: #1b1e24;
+		--text: #e6e8eb;
+		--muted: #9aa1ad;
+		--border: #2a2e36;
+		--accent: #7c9cff;
+		--accent-soft: #1e2a4d;
+		--code-bg: #161b22;
+		color-scheme: dark;
+	}
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+body {
+	font-family: var(--font-atkinson), system-ui, sans-serif;
+	margin: 0;
+	background: var(--bg);
+	color: var(--text);
+	font-size: 18px;
+	line-height: 1.7;
+	overflow-wrap: break-word;
+	-webkit-font-smoothing: antialiased;
+}
+
+main {
+	max-width: 720px;
+	margin: 0 auto;
+	padding: 3rem 1rem 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	margin: 2rem 0 0.75rem;
+	line-height: 1.25;
+	color: var(--text);
+}
+h1 {
+	font-size: 2.25rem;
+	margin-top: 0;
+}
+h2 {
+	font-size: 1.6rem;
+}
+h3 {
+	font-size: 1.3rem;
+}
+
+a {
+	color: var(--accent);
+	text-underline-offset: 3px;
+}
+
+p {
+	margin: 0 0 1.25rem;
+}
+
+strong,
+b {
+	font-weight: 700;
+}
+
+img {
+	max-width: 100%;
+	height: auto;
+	border-radius: 8px;
+}
+
+hr {
+	border: none;
+	border-top: 1px solid var(--border);
+	margin: 2rem 0;
+}
+
+blockquote {
+	margin: 1.5rem 0;
+	padding: 0.25rem 0 0.25rem 1rem;
+	border-left: 3px solid var(--accent);
+	color: var(--muted);
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+	margin: 1.5rem 0;
+	font-size: 0.95rem;
+	display: block;
+	overflow-x: auto;
+}
+th,
+td {
+	padding: 0.5rem 0.75rem;
+	border-bottom: 1px solid var(--border);
+	text-align: left;
+}
+th {
+	font-weight: 700;
+}
+
+/* Code */
+code {
+	font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+	font-size: 0.88em;
+	padding: 0.15em 0.35em;
+	border-radius: 4px;
+	background: var(--surface);
+}
+pre {
+	padding: 1rem 1.25rem;
+	border-radius: 8px;
+	border: 1px solid var(--border);
+	overflow-x: auto;
+	line-height: 1.55;
+	font-size: 0.9rem;
+}
+pre > code {
+	all: unset;
+	font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+/* Shiki dual themes: switch to the dark palette in dark mode. */
+[data-theme='dark'] .astro-code,
+[data-theme='dark'] .astro-code span {
+	color: var(--shiki-dark) !important;
+	background-color: var(--shiki-dark-bg) !important;
+}
+
+/* Copy button on code blocks */
+.code-wrapper {
+	position: relative;
+	margin: 1.5rem 0;
+}
+.code-wrapper pre {
+	margin: 0;
+}
+.copy-btn {
+	position: absolute;
+	top: 0.5rem;
+	right: 0.5rem;
+	padding: 0.2rem 0.6rem;
+	font: inherit;
+	font-size: 0.75rem;
+	color: var(--muted);
+	background: var(--bg);
+	border: 1px solid var(--border);
+	border-radius: 6px;
+	cursor: pointer;
+	opacity: 0;
+	transition: opacity 0.15s;
+}
+.code-wrapper:hover .copy-btn,
+.copy-btn:focus-visible {
+	opacity: 1;
+}
+@media (hover: none) {
+	.copy-btn {
+		opacity: 1;
+	}
+}
+
+/* Tags (shared) */
+.tags {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.4rem;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+.tag {
+	display: inline-block;
+	font-size: 0.8rem;
+	padding: 0.1rem 0.55rem;
+	border-radius: 999px;
+	background: var(--accent-soft);
+	color: var(--accent);
+	text-decoration: none;
+}
+.tag:hover {
+	text-decoration: underline;
+}
+
+.prose ul,
+.prose ol {
+	padding-left: 1.4rem;
+}
+.prose li {
+	margin-bottom: 0.35rem;
+}
+
+.sr-only {
+	border: 0;
+	padding: 0;
+	margin: 0;
+	position: absolute !important;
+	height: 1px;
+	width: 1px;
+	overflow: hidden;
+	clip: rect(1px 1px 1px 1px);
+	clip-path: inset(50%);
+	white-space: nowrap;
+}
